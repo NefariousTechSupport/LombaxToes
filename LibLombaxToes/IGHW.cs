@@ -71,6 +71,8 @@ namespace LibLombaxToes
 	}
 	public enum IGHWSectionIdentifier : uint
 	{
+		//Relates to AssetLookup
+
 		// = 0x0001D000
 		Shaders				 = 0x0001D100,
 		ShaderOnes			 = 0x0001D101,
@@ -90,5 +92,16 @@ namespace LibLombaxToes
 		ZoneOnes			 = 0x0001DA01,
 		Lighting			 = 0x0001DB00,
 		LightingOnes		 = 0x0001DB01,
+
+		//Relates to Mobys/Ties
+
+		MobyMetadata		 = 0x0000DD00,
+		MobyIndices			 = 0x0000E100,
+		MobyVertices		 = 0x0000E200,
+		MobyFilePath		 = 0x0000D200,
+		TieMetadata			 = 0x00003300,
+		TieIndices			 = 0x0000E100,
+		TieVertices			 = 0x00003000,
+		TieFilePath			 = 0x00003410
 	}
 }
