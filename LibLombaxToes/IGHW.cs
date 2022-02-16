@@ -95,6 +95,7 @@ namespace LibLombaxToes
 
 		//Relates to Mobys/Ties
 
+		MeshScale			 = 0x0000D100,
 		MobyMetadata		 = 0x0000DD00,
 		MobyIndices			 = 0x0000E100,
 		MobyVertices		 = 0x0000E200,
@@ -102,6 +103,6 @@ namespace LibLombaxToes
 		TieMetadata			 = 0x00003300,
 		TieIndices			 = 0x0000E100,
 		TieVertices			 = 0x00003000,
-		TieFilePath			 = 0x00003410
+		TieFilePath			 = 0x00003410,
 	}
 }
