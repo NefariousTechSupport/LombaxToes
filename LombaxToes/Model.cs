@@ -21,8 +21,6 @@ namespace LombaxToes.Editor
 
 			transform = new Transform();
 
-			materials[0] = new Material("Shaders/standard.vert.glsl", "Shaders/standardunlit.frag.glsl", null);	//Temp
-
 			GL.GenBuffers(model.meshCount, VBOs);
 			GL.GenVertexArrays(model.meshCount, VAOs);
 			GL.GenBuffers(model.meshCount, EBOs);
@@ -32,7 +30,8 @@ namespace LombaxToes.Editor
 				float[] vertices = model.ReadVertexBuffer(i);
 				uint[] indices = model.ReadIndexBuffer(i);
 
-				materials[i] = materials[0];		//Temporary
+				uint albedoTuid = AssetManager.shaderGroup.GetShaderFromTuid(model.GetShaderTuid(i)).GetAlbedoTextureTuid();
+				materials[i] = new Material(MaterialManager.shaders["standard.vert;standardunlit.frag"], AssetManager.LoadTexture(albedoTuid));		//Temporary
 				indexCounts[i] = indices.Length;
 
 				GL.BindBuffer(BufferTarget.ArrayBuffer, VBOs[i]);
@@ -41,6 +40,9 @@ namespace LombaxToes.Editor
 				GL.BindVertexArray(VAOs[i]);
 				GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
 				GL.EnableVertexAttribArray(0);
+
+				GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+				GL.EnableVertexAttribArray(1);
 
 				GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBOs[i]);
 				GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);

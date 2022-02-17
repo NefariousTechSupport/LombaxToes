@@ -11,10 +11,27 @@ namespace LibLombaxToes
 		float meshScale;
 		public int meshCount;
 
+		public ulong[] shaderTuids;
+
 		public IrbModel(Stream input) : base(input)
 		{
 			ReadMeshMetadata();
-			ReadMeshScale();
+			if(type == 0)
+			{
+				ReadMeshScale();
+			}
+			else
+			{
+				meshScale = 1;
+			}
+			
+			IGHWSectionHeader shaderTuidsSection = GetSectionHeader(IGHWSectionIdentifier.MeshShaders);
+			sh.BaseStream.Seek(shaderTuidsSection.offset, SeekOrigin.Begin);
+			shaderTuids = new ulong[(int)shaderTuidsSection.itemCount & ~0x10000000];
+			for(int i = 0; i < shaderTuids.Length; i++)
+			{
+				shaderTuids[i] = sh.ReadUInt64();
+			}
 		}
 
 		void ReadMeshScale()
@@ -103,18 +120,32 @@ namespace LibLombaxToes
 
 		public void ExportToObj(Stream output, int index)
 		{
-			float[] vertices = ReadVertexBuffer(index);
-			uint[] indices = ReadIndexBuffer(index);
+			uint currentIndex = 0;
 
-			for(int j = 0; j < vertices.Length; j += 0x05)
-			{
-				output.Write(Encoding.ASCII.GetBytes($"v {vertices[j + 0].ToString("F")} {vertices[j + 1].ToString("F")} {vertices[j + 2].ToString("F")}\n"));
-				output.Write(Encoding.ASCII.GetBytes($"vt {vertices[j + 3].ToString("F")} {vertices[j + 4].ToString("F")}\n"));
-			}
+			output.Write(Encoding.ASCII.GetBytes($"g\nmtllib untitled.mtl\n"));
 
-			for(int j =0; j < indices.Length; j += 3)
+			for(int i = 0; i < meshCount; i++)
 			{
-				output.Write(Encoding.ASCII.GetBytes($"f {indices[j + 0]+1}/{indices[j + 0]+1} {indices[j + 1]+1}/{indices[j + 1]+1} {indices[j + 2]+1}/{indices[j + 2]+1}\n"));
+				float[] vertices = ReadVertexBuffer(i);
+				uint[] indices = ReadIndexBuffer(i);
+
+				
+				for(int j = 0; j < vertices.Length; j += 0x05)
+				{
+					output.Write(Encoding.ASCII.GetBytes($"v {vertices[j + 0].ToString("F")} {vertices[j + 1].ToString("F")} {vertices[j + 2].ToString("F")}\n"));
+					output.Write(Encoding.ASCII.GetBytes($"vt {vertices[j + 3].ToString("F")} {vertices[j + 4].ToString("F")}\n"));
+				}
+
+				output.Write(Encoding.ASCII.GetBytes($"g Mesh_{i}\nusemtl Mesh_{i}\n"));
+
+				for(int j = 0; j < indices.Length; j += 3)
+				{
+					output.Write(Encoding.ASCII.GetBytes($"f {currentIndex + indices[j + 0]+1}/{currentIndex + indices[j + 0]+1} {currentIndex + indices[j + 1]+1}/{currentIndex + indices[j + 1]+1} {currentIndex + indices[j + 2]+1}/{currentIndex + indices[j + 2]+1}\n"));
+				}
+
+				currentIndex += indices.Max() + 1;
+
+				output.Write(Encoding.ASCII.GetBytes($"g\n"));
 			}
 		}
 
@@ -177,6 +208,10 @@ namespace LibLombaxToes
 			}
 
 			return indices;
+		}
+		public ulong GetShaderTuid(int index)
+		{
+			return shaderTuids[metadatas[index].shaderIndex];
 		}
 	}
 	public struct MeshMetadata

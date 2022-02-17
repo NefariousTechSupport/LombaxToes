@@ -38,7 +38,13 @@ namespace LibLombaxToes
 
 		public IGHWSectionHeader GetSectionHeader(IGHWSectionIdentifier id)
 		{
-			return sections.First(x => x.identifier == id);
+			int index = Array.FindIndex<IGHWSectionHeader>(sections, x => x.identifier == id);	//Usually texture refs only store the last 4 bytes so we only check those last 4 bytes
+			if(index < 0)
+			{			
+				Console.WriteLine($"Couldn't find {id}");
+				return new IGHWSectionHeader();
+			}
+			return sections[index];
 		}
 	}
 
@@ -96,6 +102,7 @@ namespace LibLombaxToes
 		//Relates to Mobys/Ties
 
 		MeshScale			 = 0x0000D100,
+		MeshShaders			 = 0x00005600,
 		MobyMetadata		 = 0x0000DD00,
 		MobyIndices			 = 0x0000E100,
 		MobyVertices		 = 0x0000E200,
@@ -104,5 +111,10 @@ namespace LibLombaxToes
 		TieIndices			 = 0x0000E100,
 		TieVertices			 = 0x00003000,
 		TieFilePath			 = 0x00003410,
+
+		//Relates to Shaders
+
+		ShaderTextures		 = 0x00005A00,
+		ShaderStrings		 = 0x00011300,
 	}
 }

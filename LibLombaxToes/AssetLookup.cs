@@ -8,5 +8,14 @@ namespace LibLombaxToes
 		{
 			return new TextureGroup(texStream, hmStream, this);
 		}
+
+		public ModelGroup ReadModels(Stream mobyStream, Stream tieStream)
+		{
+			return new ModelGroup(mobyStream, tieStream, this);
+		}
+		public ShaderGroup ReadShaders(Stream shaderStream)
+		{
+			return new ShaderGroup(shaderStream, this);
+		}
 	}
 }
