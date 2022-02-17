@@ -48,8 +48,8 @@
 
 | Addr | Size |  Type  | Desc |
 |------|------|--------|------|
-| 0000 | 0002 | Int 16 | Unknown |
-| 0002 | 0002 | Int 16 | Unknown |
+| 0000 | 0002 | Int 16 | index of moby in regions.dat |
+| 0002 | 0002 | Int 16 | the first parameter of the moby_handle constructor |
 | 0004 | 0004 | Single | Unknown |
 | 0008 | 0004 | Single | Unknown |
 | 000C | 0004 | Int 32 | Points to an IGHW |

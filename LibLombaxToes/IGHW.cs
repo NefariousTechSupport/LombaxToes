@@ -117,5 +117,15 @@ namespace LibLombaxToes
 
 		ShaderTextures		 = 0x00005A00,
 		ShaderStrings		 = 0x00011300,
+
+		//Relates to GP_Prius
+
+		PriusStrings		 = 0x00011300,
+		PriusInstances 		 = 0x00025048,
+		PriusInstanceNames	 = 0x0002504C,
+
+		//Relates to Region
+
+		RegionMobys			 = 0x0001C600,
 	}
 }
