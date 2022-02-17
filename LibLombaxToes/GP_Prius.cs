@@ -39,5 +39,8 @@ namespace LibLombaxToes
 		[FieldOffset(0x14)] public float xpos;
 		[FieldOffset(0x18)] public float ypos;
 		[FieldOffset(0x1C)] public float zpos;
+		[FieldOffset(0x20)] public float xrot;
+		[FieldOffset(0x24)] public float yrot;
+		[FieldOffset(0x28)] public float zrot;
 	}
 }
