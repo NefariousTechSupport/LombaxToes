@@ -8,7 +8,9 @@ namespace LibLombaxToes
 	{
 		int type = -1;		//0 is Moby, 1 is Tie, -1 means no mesh
 		MeshMetadata[] metadatas;
-		float meshScale;
+		float meshScaleX;
+		float meshScaleY;
+		float meshScaleZ;
 		public int meshCount;
 
 		public ulong[] shaderTuids;
@@ -16,14 +18,7 @@ namespace LibLombaxToes
 		public IrbModel(Stream input) : base(input)
 		{
 			ReadMeshMetadata();
-			if(type == 0)
-			{
-				ReadMeshScale();
-			}
-			else
-			{
-				meshScale = 1;
-			}
+			ReadMeshScale();
 			
 			IGHWSectionHeader shaderTuidsSection = GetSectionHeader(IGHWSectionIdentifier.MeshShaders);
 			sh.BaseStream.Seek(shaderTuidsSection.offset, SeekOrigin.Begin);
@@ -36,10 +31,24 @@ namespace LibLombaxToes
 
 		void ReadMeshScale()
 		{
-			IGHWSectionHeader meshScaleSection = GetSectionHeader(IGHWSectionIdentifier.MeshScale);
-			sh.BaseStream.Seek(meshScaleSection.offset + 0x70, SeekOrigin.Begin);
-			meshScale = BitConverter.ToSingle(BitConverter.GetBytes(sh.ReadUInt32() + 0x07800000));
-			Console.WriteLine(meshScale);
+			if(type == 0)
+			{
+				IGHWSectionHeader mobyScaleSection = GetSectionHeader(IGHWSectionIdentifier.MobyScale);
+				sh.BaseStream.Seek(mobyScaleSection.offset + 0x70, SeekOrigin.Begin);
+				meshScaleX = meshScaleY = meshScaleZ = BitConverter.ToSingle(BitConverter.GetBytes(sh.ReadUInt32() + 0x07800000));
+			}
+			else if (type == 1)
+			{
+				IGHWSectionHeader mobyScaleSection = GetSectionHeader(IGHWSectionIdentifier.TieScale);
+				sh.BaseStream.Seek(mobyScaleSection.offset + 0x1C, SeekOrigin.Begin);
+				uint rawmeshy = sh.ReadUInt32();
+				Console.WriteLine(rawmeshy.ToString("X08"));
+				//meshScaleY = BitConverter.ToSingle(BitConverter.GetBytes(rawmeshy - 0x05800000));
+				sh.BaseStream.Seek(mobyScaleSection.offset + 0x24, SeekOrigin.Begin);
+				//meshScaleZ = BitConverter.ToSingle(BitConverter.GetBytes(sh.ReadUInt32() + 0x05800000));
+				//meshScaleX = 1;
+				meshScaleX = meshScaleY = meshScaleZ = 1;
+			}
 		}
 		void ReadMeshMetadata()
 		{
@@ -86,7 +95,6 @@ namespace LibLombaxToes
 				meshCount = (int)tieMetadataSection.itemCount & ~0x10000000;
 				metadatas = new MeshMetadata[meshCount];
 
-
 				for(int i = 0; i < meshCount; i++)
 				{
 					sh.BaseStream.Seek(tieMetadataSection.offset + i*0x40, SeekOrigin.Begin);
@@ -110,7 +118,6 @@ namespace LibLombaxToes
 					metadatas[i].boneMapOffset = sh.ReadUInt32();
 					sh.ReadUInt32();
 				}
-
 			}
 			else
 			{
@@ -170,9 +177,9 @@ namespace LibLombaxToes
 				else if(metadatas[index].type == 0) sh.BaseStream.Seek(vertexSection.offset +  metadatas[index].verticesStart + i  * 0x14, SeekOrigin.Begin);
 				else if(metadatas[index].type == 1) sh.BaseStream.Seek(vertexSection.offset +  metadatas[index].verticesStart + i  * 0x1C, SeekOrigin.Begin);
 
-				vertices[i * 5 + 0] = (sh.ReadInt16() / (float)0xFFFF) * meshScale;
-				vertices[i * 5 + 1] = (sh.ReadInt16() / (float)0xFFFF) * meshScale;
-				vertices[i * 5 + 2] = (sh.ReadInt16() / (float)0xFFFF) * meshScale;
+				vertices[i * 5 + 0] = (sh.ReadInt16() / (float)0xFFFF) * meshScaleX;
+				vertices[i * 5 + 1] = (sh.ReadInt16() / (float)0xFFFF) * meshScaleY;
+				vertices[i * 5 + 2] = (sh.ReadInt16() / (float)0xFFFF) * meshScaleZ;
 
 				if(type == 1)                       sh.BaseStream.Seek(vertexSection.offset + (metadatas[index].verticesStart + i) * 0x14 + 0x08, SeekOrigin.Begin);
 				else if(metadatas[index].type == 0) sh.BaseStream.Seek(vertexSection.offset +  metadatas[index].verticesStart + i  * 0x14 + 0x08, SeekOrigin.Begin);
