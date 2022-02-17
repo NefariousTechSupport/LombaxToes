@@ -31,6 +31,8 @@ namespace LombaxToes.Editor
 			textureGroup = assetlookup.ReadTextures(texturesFS, highmipsFS);
 			modelGroup = assetlookup.ReadModels(mobysFS, tiesFS);
 			shaderGroup = assetlookup.ReadShaders(shadersFS);
+
+			EntityManager.LoadLevel(folderPath);
 		}
 		public static Texture LoadTexture(ulong tuid) => LoadTexture((uint)tuid);
 		public static Texture LoadTexture(uint tuid)

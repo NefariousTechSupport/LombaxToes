@@ -9,8 +9,6 @@ namespace LombaxToes.Editor
 		Material[] materials;
 		int[] indexCounts;
 
-		Transform transform;
-
 		public Model(IrbModel model)
 		{
 			VBOs = new int[model.meshCount];
@@ -18,8 +16,6 @@ namespace LombaxToes.Editor
 			EBOs = new int[model.meshCount];
 			materials = new Material[model.meshCount];
 			indexCounts = new int[model.meshCount];
-
-			transform = new Transform();
 
 			GL.GenBuffers(model.meshCount, VBOs);
 			GL.GenVertexArrays(model.meshCount, VAOs);
@@ -49,7 +45,7 @@ namespace LombaxToes.Editor
 			}
 		}
 
-		public void Render()
+		public void Render(Transform transform)
 		{
 			for(int i = 0; i < VBOs.Length; i++)
 			{

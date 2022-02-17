@@ -17,7 +17,7 @@ namespace LombaxToes.Editor
 
 		public void Render()
 		{
-			
+			model.Render(transform);
 		}
 	}
 }
