@@ -61,6 +61,11 @@ namespace LibLombaxToes
 			height = textures[index].height;
 			mipmapCount = textures[index].mipmapCount;
 
+			if(format != TextureFormat.DXT1 && format != TextureFormat.DXT5)
+			{
+				Console.WriteLine($"{tuid.ToString("X016")} has an unsupported texture");
+			}
+
 			return data;
 		}
 	}

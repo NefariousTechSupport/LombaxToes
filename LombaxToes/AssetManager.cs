@@ -39,7 +39,7 @@ namespace LombaxToes.Editor
 		{
 			if(textures.Any(x => x.Key == tuid)) return textures.First(x => x.Key == tuid).Value;
 
-			Console.WriteLine(tuid.ToString("X08"));	
+			//Console.WriteLine(tuid.ToString("X08"));	
 		
 			byte[] data = textureGroup.RipTexture(tuid, false, out TextureFormat format, out int width, out int height, out int mipmapCount);
 
@@ -61,7 +61,15 @@ namespace LombaxToes.Editor
 		{
 			if(models.Any(x => x.Key == tuid)) return models.First(x => x.Key == tuid).Value;
 
-			Model mod = new Model(modelGroup.GetModelFromTuid(tuid));
+			IrbModel irb = modelGroup.GetModelFromTuid(tuid);
+
+			if(irb == null)
+			{
+				models.Add(tuid, null);
+				return null;
+			}
+
+			Model mod = new Model(irb);
 
 			models.Add(tuid, mod);
 

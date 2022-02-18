@@ -14,10 +14,19 @@ namespace LombaxToes.Editor
 
 			this.model = model;
 		}
+		public Entity(Matrix4 transformation, Model model)
+		{
+			transform = new Transform(transformation);
+
+			this.model = model;
+		}
 
 		public void Render()
 		{
-			model.Render(transform);
+			if(model != null)
+			{
+				model.Render(transform);
+			}
 		}
 	}
 }

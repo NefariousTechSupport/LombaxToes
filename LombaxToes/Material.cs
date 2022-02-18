@@ -4,11 +4,13 @@ namespace LombaxToes.Editor
 	{
 		public int programId;
 		Texture albedo;
+		public PrimitiveType drawType;
 
-		public Material(int handle, Texture albedo)
+		public Material(int handle, Texture albedo, PrimitiveType primitiveType = PrimitiveType.Triangles)
 		{
 			this.albedo = albedo;
 			this.programId = handle;
+			this.drawType = primitiveType;
 		}
 
 		public void Use()

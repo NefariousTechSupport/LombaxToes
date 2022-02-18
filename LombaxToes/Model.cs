@@ -56,7 +56,7 @@ namespace LombaxToes.Editor
 				materials[i].SetMatrix4x4("projection", Camera.ViewToClip);
 
 				GL.BindVertexArray(VAOs[i]);
-				GL.DrawElements(PrimitiveType.Triangles, indexCounts[i], DrawElementsType.UnsignedInt, 0);
+				GL.DrawElements(materials[i].drawType, indexCounts[i], DrawElementsType.UnsignedInt, 0);
 			}
 		}
 		public void Dispose()

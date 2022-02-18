@@ -123,9 +123,17 @@ namespace LibLombaxToes
 		PriusStrings		 = 0x00011300,
 		PriusInstances 		 = 0x00025048,
 		PriusInstanceNames	 = 0x0002504C,
+		PriusVolumes		 = 0x0002505C,
+		PriusVolumeNames	 = 0x00025060,
 
 		//Relates to Region
 
 		RegionMobys			 = 0x0001C600,
+
+		//Relates to Zone
+
+		ZoneTieTuids		 = 0x00007200,
+		ZoneTieInstances	 = 0x00007240,
+		ZoneTieNames		 = 0x000072C0,
 	}
 }

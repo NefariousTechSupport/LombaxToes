@@ -3,15 +3,12 @@ namespace LombaxToes.Editor
 	public class Window : GameWindow
 	{
 		string folder;
+		Vector2 freecamLocal;
 
 		public Window(GameWindowSettings gws, NativeWindowSettings nws, string folderPath) : base(gws, nws)
 		{
 			folder = folderPath;
 		}
-
-		Model model;
-
-		Vector2 freecamLocal;
 
 		protected override void OnLoad()
 		{
@@ -28,7 +25,7 @@ namespace LombaxToes.Editor
 			//model = AssetManager.LoadIrb(0x04396A536A8F9378);	//Ratchet
 			//model = AssetManager.LoadIrb(0x43A9B7A20CDCC90F);	//Aphelion
 			//model = AssetManager.LoadIrb(0x04726A04067CC7C6);	//Sonic eruptor
-			EntityManager.entities.Add(new Entity(Camera.transform.position, Vector3.Zero, Vector3.One, AssetManager.LoadIrb(0x28DAF9DDD21C6637)));	//Bronze Agorian Statue
+			//EntityManager.entities.Add(new Entity(Camera.transform.position, Vector3.Zero, Vector3.One, AssetManager.LoadIrb(0x28DAF9DDD21C6637)));	//Bronze Agorian Statue
 
 			Camera.CreatePerspective(MathHelper.PiOver2);
 

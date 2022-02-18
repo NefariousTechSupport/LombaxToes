@@ -12,6 +12,7 @@ namespace LibLombaxToes
 		float meshScaleY;
 		float meshScaleZ;
 		public int meshCount;
+		public string path;
 
 		public ulong[] shaderTuids;
 
@@ -27,6 +28,22 @@ namespace LibLombaxToes
 			{
 				shaderTuids[i] = sh.ReadUInt64();
 			}
+
+			ReadMeshPath();
+		}
+
+		void ReadMeshPath()
+		{
+			IGHWSectionHeader pathSection;
+			if(type == 0)
+			{
+				pathSection = GetSectionHeader(IGHWSectionIdentifier.MobyFilePath);
+			}
+			else
+			{
+				pathSection = GetSectionHeader(IGHWSectionIdentifier.TieFilePath);
+			}
+			path = sh.ReadStringFromOffset(pathSection.offset);
 		}
 
 		void ReadMeshScale()
@@ -41,13 +58,10 @@ namespace LibLombaxToes
 			else if (type == 1)
 			{
 				IGHWSectionHeader mobyScaleSection = GetSectionHeader(IGHWSectionIdentifier.TieScale);
-				sh.BaseStream.Seek(mobyScaleSection.offset + 0x1C, SeekOrigin.Begin);
-				uint rawmeshy = sh.ReadUInt32();
-				Console.WriteLine(rawmeshy.ToString("X08"));
-				//meshScaleY = BitConverter.ToSingle(BitConverter.GetBytes(rawmeshy - 0x05800000));
-				sh.BaseStream.Seek(mobyScaleSection.offset + 0x24, SeekOrigin.Begin);
-				//meshScaleZ = BitConverter.ToSingle(BitConverter.GetBytes(sh.ReadUInt32() + 0x05800000));
-				//meshScaleX = 1;
+				sh.BaseStream.Seek(mobyScaleSection.offset + 0x20, SeekOrigin.Begin);
+				//meshScaleX = sh.ReadSingle();
+				//meshScaleY = sh.ReadSingle();
+				//meshScaleZ = sh.ReadSingle();
 				meshScaleX = meshScaleY = meshScaleZ = 1;
 			}
 		}

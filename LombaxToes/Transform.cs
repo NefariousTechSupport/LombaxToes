@@ -23,6 +23,12 @@ namespace LombaxToes.Editor
 		}
 
 		public Transform(){}
+		public Transform(Matrix4 mat)
+		{
+			position = mat.ExtractTranslation();
+			rotation = mat.ExtractRotation();
+			scale = mat.ExtractScale();
+		}
 		public Matrix4 GetLocalToWorldMatrix()
 		{
 			return Matrix4.Identity * Matrix4.CreateScale(scale) * Matrix4.CreateFromQuaternion(rotation) * Matrix4.CreateTranslation(position);

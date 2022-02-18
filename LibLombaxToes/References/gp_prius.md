@@ -57,9 +57,9 @@
 | 0014 | 0004 | Single | X coord of the instance |
 | 0018 | 0004 | Single | Y coord of the instance |
 | 001C | 0004 | Single | Z coord of the instance |
-| 0020 | 0004 | Int 32 | Zero |
-| 0024 | 0004 | Int 32 | Unknown |
-| 0028 | 0004 | Int 32 | Unknown |
+| 0020 | 0004 | Int 32 | X rotation of the instance (euler angles, radians) |
+| 0024 | 0004 | Int 32 | Y rotation of the instance (euler angles, radians) |
+| 0028 | 0004 | Int 32 | Z rotation of the instance (euler angles, radians) |
 | 002C | 0004 | Int 32 | Unknown |
 | 0030 | 0004 | Int 32 | Unknown |
 | 0034 | 0004 | Int 32 | Unknown |
