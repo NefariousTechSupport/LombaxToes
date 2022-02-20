@@ -20,6 +20,8 @@ namespace LombaxToes.Editor
 
 
 			MaterialManager.LoadMaterial("standard.vert;standardunlit.frag", "Shaders/standard.vert.glsl", "Shaders/standardunlit.frag.glsl");
+			MaterialManager.LoadMaterial("standard.vert;standardwhite.frag", "Shaders/standard.vert.glsl", "Shaders/standardwhite.frag.glsl");
+
 			AssetManager.LoadAssets(folder);
 
 			//model = AssetManager.LoadIrb(0x04396A536A8F9378);	//Ratchet

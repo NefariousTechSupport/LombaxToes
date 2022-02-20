@@ -12,10 +12,10 @@ namespace LibLombaxToes
 
 		public ulong[] tieTuids;
 
-		public Zone(Stream input, ModelGroup ties) : base(input)
+		public Zone(Stream input) : base(input)
 		{
 			ReadTieTuids();
-			ReadInstances(ties);
+			ReadInstances();
 		}
 		public void ReadTieTuids()
 		{
@@ -27,7 +27,7 @@ namespace LibLombaxToes
 				tieTuids[i] = sh.ReadUInt64();
 			}
 		}
-		public void ReadInstances(ModelGroup ties)
+		public void ReadInstances()
 		{
 			IGHWSectionHeader instanceNamesSection = GetSectionHeader(IGHWSectionIdentifier.ZoneTieNames);
 			IGHWSectionHeader instancesSections = GetSectionHeader(IGHWSectionIdentifier.ZoneTieInstances);
@@ -45,7 +45,7 @@ namespace LibLombaxToes
 				sh.BaseStream.Seek(instancesSections.offset + i * 0x80, SeekOrigin.Begin);
 				instances[i] = sh.ReadStruct<TieInstance>();
 
-				Console.WriteLine($"\"{instanceNames[i]}\" should be \"{ties.GetModelFromTuid(tieTuids[instances[i].tieIndex]).path}\"");
+				//Console.WriteLine($"\"{instanceNames[i]}\" should be \"{ties.GetModelFromTuid(tieTuids[instances[i].tieIndex]).path}\"");
 			}
 		}
 	}
@@ -53,9 +53,6 @@ namespace LibLombaxToes
 	[StructLayout(LayoutKind.Explicit, Size = 0x80)]
 	public struct TieInstance
 	{
-		/*[FieldOffset(0x40)] public float xpos;
-		[FieldOffset(0x44)] public float ypos;
-		[FieldOffset(0x48)] public float zpos;*/
 		[FieldOffset(0x00)] public float float01;
 		[FieldOffset(0x04)] public float float02;
 		[FieldOffset(0x08)] public float float03;
@@ -72,6 +69,10 @@ namespace LibLombaxToes
 		[FieldOffset(0x34)] public float float14;
 		[FieldOffset(0x38)] public float float15;
 		[FieldOffset(0x3C)] public float float16;
+		[FieldOffset(0x40)]	public float boundingSphereX;
+		[FieldOffset(0x44)]	public float boundingSphereY;
+		[FieldOffset(0x48)]	public float boundingSphereZ;
+		[FieldOffset(0x4C)]	public float boundingSphereRadius;
 		[FieldOffset(0x50)] public uint tieIndex;
 	}
 }

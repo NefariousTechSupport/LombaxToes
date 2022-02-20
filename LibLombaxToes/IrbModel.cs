@@ -52,17 +52,15 @@ namespace LibLombaxToes
 			{
 				IGHWSectionHeader mobyScaleSection = GetSectionHeader(IGHWSectionIdentifier.MobyScale);
 				sh.BaseStream.Seek(mobyScaleSection.offset + 0x70, SeekOrigin.Begin);
-				//meshScaleX = meshScaleY = meshScaleZ = BitConverter.ToSingle(BitConverter.GetBytes(sh.ReadUInt32() + 0x07800000));
 				meshScaleX = meshScaleY = meshScaleZ = BitConverter.ToSingle(BitConverter.GetBytes(sh.ReadUInt32() + 0x06800000));
 			}
 			else if (type == 1)
 			{
 				IGHWSectionHeader mobyScaleSection = GetSectionHeader(IGHWSectionIdentifier.TieScale);
 				sh.BaseStream.Seek(mobyScaleSection.offset + 0x20, SeekOrigin.Begin);
-				//meshScaleX = sh.ReadSingle();
-				//meshScaleY = sh.ReadSingle();
-				//meshScaleZ = sh.ReadSingle();
-				meshScaleX = meshScaleY = meshScaleZ = 1;
+				meshScaleX = sh.ReadSingle() * (float)Math.Pow(2, 16);
+				meshScaleY = sh.ReadSingle() * (float)Math.Pow(2, 16);
+				meshScaleZ = sh.ReadSingle() * (float)Math.Pow(2, 16);
 			}
 		}
 		void ReadMeshMetadata()

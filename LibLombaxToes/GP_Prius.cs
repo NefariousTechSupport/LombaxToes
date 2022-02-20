@@ -51,7 +51,7 @@ namespace LibLombaxToes
 			volumes = new Volume[volumeCount];
 
 			sh.BaseStream.Seek(volumeNamesSection.offset, SeekOrigin.Begin);
-			volumeNamePointers = ReadPointerArray(volumeCount);				//No ordinary pointer array
+			volumeNamePointers = ReadPointerArray(volumeCount);				//No ordinary pointer array since the length field means something else 
 			for(int i = 0; i < volumeCount; i++)
 			{
 				volumeNames[i] = sh.ReadStringFromOffset(volumeNamePointers[i].offset);
