@@ -51,6 +51,7 @@ namespace LombaxToes.Editor
 			}
 			else
 			{
+				Console.WriteLine($"Texture {tuid.ToString("X08")} not found in assetlookup.dat");
 				textures.Add(tuid, null);
 				return null;
 			}
@@ -73,12 +74,6 @@ namespace LombaxToes.Editor
 
 			models.Add(tuid, mod);
 
-			if(irb.path.Contains("jn_ago_lobby_bronze_statue_pose1"))
-			{
-				FileStream ods = new FileStream("test.obj", FileMode.Create, FileAccess.ReadWrite);
-				irb.ExportToObj(ods, 0);
-				ods.Close();
-			}
 			return mod;
 		}
 	}

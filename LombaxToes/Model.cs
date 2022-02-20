@@ -33,7 +33,7 @@ namespace LombaxToes.Editor
 				}
 				catch(NullReferenceException)
 				{
-					materials[i] = new Material(MaterialManager.shaders["standard.vert;standardunlit.frag"], null);										//Temporary
+					materials[i] = new Material(MaterialManager.shaders["standard.vert;standardunlit.frag"], null);
 				}
 
 				indexCounts[i] = indices.Length;
