@@ -7,10 +7,7 @@ namespace LombaxToes.Editor
 
 		public Entity(Vector3 position, Vector3 rotation, Vector3 scale, Model model)
 		{
-			transform = new Transform();
-			transform.position = position;
-			transform.rotation = Quaternion.FromEulerAngles(rotation);
-			transform.scale = scale;
+			transform = new Transform(position, rotation, scale);
 
 			this.model = model;
 		}

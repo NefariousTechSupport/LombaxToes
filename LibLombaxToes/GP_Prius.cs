@@ -73,6 +73,7 @@ namespace LibLombaxToes
 		[FieldOffset(0x20)] public float xrot;
 		[FieldOffset(0x24)] public float yrot;
 		[FieldOffset(0x28)] public float zrot;
+		[FieldOffset(0x2C)] public float scale;
 	}
 
 	[StructLayout(LayoutKind.Explicit, Size = 0x40)]

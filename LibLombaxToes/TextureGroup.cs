@@ -36,10 +36,14 @@ namespace LibLombaxToes
 				textures[i].height = 1 << parent.sh.ReadByte();
 			}
 		}
+		public int FindTexture(ulong tuid)
+		{
+			return Array.FindIndex<Texture>(textures, x => (x.texturesPointer.tuid & 0xFFFFFFFF) == (tuid & 0xFFFFFFFF));	//Usually texture refs only store the last 4 bytes so we only check those last 4 bytes
+		}
 		//Rewrite to support mipmaps and highmips
 		public byte[] RipTexture(ulong tuid, bool ripMipmaps, out TextureFormat format, out int width, out int height, out int mipmapCount)
 		{
-			int index = Array.FindIndex<Texture>(textures, x => (x.texturesPointer.tuid & 0xFFFFFFFF) == (tuid & 0xFFFFFFFF));	//Usually texture refs only store the last 4 bytes so we only check those last 4 bytes
+			int index = FindTexture(tuid);
 			if(index < 0)
 			{
 				format = TextureFormat.DXT1;
@@ -63,7 +67,7 @@ namespace LibLombaxToes
 
 			if(format != TextureFormat.DXT1 && format != TextureFormat.DXT5)
 			{
-				Console.WriteLine($"{tuid.ToString("X016")} has an unsupported texture");
+				Console.WriteLine($"{tuid.ToString("X016")} has an unsupported texture format");
 			}
 
 			return data;

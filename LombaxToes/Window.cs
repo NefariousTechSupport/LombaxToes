@@ -17,6 +17,7 @@ namespace LombaxToes.Editor
 			GL.ClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Texture2D);
+			//GL.Enable(EnableCap.CullFace);	//Uncomment to improve performance, however there are some issues right now where ties are inside out cos their scale is -1, hence it's commented out
 
 
 			MaterialManager.LoadMaterial("standard.vert;standardunlit.frag", "Shaders/standard.vert.glsl", "Shaders/standardunlit.frag.glsl");
@@ -28,6 +29,7 @@ namespace LombaxToes.Editor
 			//model = AssetManager.LoadIrb(0x43A9B7A20CDCC90F);	//Aphelion
 			//model = AssetManager.LoadIrb(0x04726A04067CC7C6);	//Sonic eruptor
 			//EntityManager.entities.Add(new Entity(Camera.transform.position, Vector3.Zero, Vector3.One, AssetManager.LoadIrb(0x28DAF9DDD21C6637)));	//Bronze Agorian Statue
+			//EntityManager.entities.Add(new Entity(Camera.transform.position, Vector3.Zero, Vector3.One, AssetManager.LoadIrb(0xB556C2E9D2C64B94)));		//QForce Ratchet
 
 			Camera.CreatePerspective(MathHelper.PiOver2);
 
@@ -50,7 +52,7 @@ namespace LombaxToes.Editor
 			if(KeyboardState.IsKeyDown(Keys.Escape)) Close();
 
 			float moveSpeed = 20;
-			float sensitivity = 1f;
+			float sensitivity = 0.01f;
 
 			if(KeyboardState.IsKeyDown(Keys.LeftShift)) moveSpeed *= 10;
 
@@ -59,7 +61,7 @@ namespace LombaxToes.Editor
 			if(KeyboardState.IsKeyDown(Keys.S)) Camera.transform.position -= Camera.transform.Forward * (float)args.Time * moveSpeed;
 			if(KeyboardState.IsKeyDown(Keys.D)) Camera.transform.position -= Camera.transform.Right * (float)args.Time * moveSpeed;
 
-			freecamLocal += MouseState.Delta.Yx * (float)args.Time * sensitivity;
+			freecamLocal += MouseState.Delta.Yx * sensitivity;
 
 			freecamLocal.X = MathHelper.Clamp(freecamLocal.X, -MathHelper.PiOver2 + 0.0001f, MathHelper.PiOver2 - 0.0001f);
 

@@ -6,8 +6,11 @@ namespace LombaxToes.Editor
 
 		public static int LoadMaterial(string name, string vertexShaderPath, string fragmentShaderPath)
 		{
-			if(shaders.Any(x => x.Key == name)) return shaders.First(x => x.Key == name).Value;
-
+			if(shaders.Any(x => x.Key == name))
+			{
+				int shaderID = shaders.First(x => x.Key == name).Value;
+				return shaderID;
+			}
 			string vertexSource = File.ReadAllText(vertexShaderPath);
 			string fragmentSource = File.ReadAllText(fragmentShaderPath);
 

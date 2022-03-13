@@ -28,7 +28,15 @@ namespace LombaxToes.Editor
 
 				try
 				{
-					uint albedoTuid = AssetManager.shaderGroup.GetShaderFromTuid(model.GetShaderTuid(i)).GetAlbedoTextureTuid();
+					Shader shader = AssetManager.shaderGroup.GetShaderFromTuid(model.GetShaderTuid(i));
+					uint albedoTuid = 0;
+					for(int j = 0; j < shader.textureTuidCount; j++)
+					{
+						albedoTuid = shader.GetTextureTuid(j);
+						if(albedoTuid == 0) continue;
+						if(AssetManager.textureGroup.FindTexture(albedoTuid) < 0) continue;
+						break;
+					}
 					materials[i] = new Material(MaterialManager.shaders["standard.vert;standardunlit.frag"], AssetManager.LoadTexture(albedoTuid));		//Temporary
 				}
 				catch(NullReferenceException)
