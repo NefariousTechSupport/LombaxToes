@@ -43,11 +43,11 @@ namespace LombaxToes.Editor
 
 			GL.LinkProgram(programId);
 
-			GL.GetProgram(fragmentProgramId, GetProgramParameterName.LinkStatus, out res);
+			GL.GetProgram(programId, GetProgramParameterName.LinkStatus, out res);
 			if(res != (int)All.True)
 			{
 				string infoLog = GL.GetProgramInfoLog(programId);
-				throw new Exception($"Error when linking program. Error: {infoLog}");
+				throw new Exception($"Error when linking program.\nError Code {GL.GetError()}.\nError Log: {infoLog}");
 			}
 
 			GL.DetachShader(programId, vertexProgramId);
