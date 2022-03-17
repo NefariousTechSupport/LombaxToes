@@ -17,7 +17,7 @@ void main()
 	}
 	else
 	{
-		vec4 texel = texture(noTextureTexture, UVs);
-		colour = vec4(texel.rgb, 1.0);
+		//vec4 texel = texture(noTextureTexture, UVs);
+		colour = vec4(1.0, 0.0, 1.0, 1.0);
 	}
 }

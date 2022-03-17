@@ -2,8 +2,13 @@ LibLombaxToes/bin
 LombaxToes/bin
 LombaxToes/obj
 LibLombaxToes/obj
-.vs
 .vscode
 *.dat
 *.irb
-*.bmp
+.vs/LombaxToes/v17/.suo
+.vs/LombaxToes/v17/Browse.VC.db
+.vs/LombaxToes/v17/Browse.VC.db-shm
+.vs/LombaxToes/v17/Browse.VC.db-wal
+.vs/LombaxToes/v17/Browse.VC.opendb
+.vs/LombaxToesOfficial/v17/.suo
+LombaxToes/Shaders/no_texture.bmp
