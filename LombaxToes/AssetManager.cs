@@ -38,10 +38,8 @@ namespace LombaxToes.Editor
 		public static Texture LoadTexture(uint tuid)
 		{
 			if(textures.Any(x => x.Key == tuid)) return textures.First(x => x.Key == tuid).Value;
-
-			//Console.WriteLine(tuid.ToString("X08"));	
 		
-			byte[] data = textureGroup.RipTexture(tuid, false, out TextureFormat format, out int width, out int height, out int mipmapCount);
+			byte[] data = textureGroup.RipTexture(tuid, true, out TextureFormat format, out int width, out int height, out int mipmapCount);
 
 			if(data != null || width != 0)
 			{

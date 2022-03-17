@@ -24,14 +24,19 @@ namespace LibLombaxToes
 			}
 		}
 
-		public uint GetAlbedoTextureTuid()
+		public uint GetTextureTuid(int index)
 		{
 			if(textureTuids.Length == 0)
 			{
 				Console.WriteLine($"No textures in shader {name}");
 				return 0;
 			}
-			return textureTuids[0];
+			if(textureTuids.Length <= index || index < 0)
+			{
+				Console.WriteLine("Invalid index");
+				return 0;
+			}
+			return textureTuids[index];
 		}
 	}
 }

@@ -2,6 +2,7 @@ LibLombaxToes/bin
 LombaxToes/bin
 LombaxToes/obj
 LibLombaxToes/obj
+.vs
 .vscode
 *.dat
 *.irb

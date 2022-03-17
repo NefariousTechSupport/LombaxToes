@@ -9,6 +9,9 @@ namespace LombaxToes.Editor
 		public Material[] materials;
 		int[] indexCounts;
 
+		Vector3 boundingCentre;
+		float boundingRadius;
+
 		public Model(IrbModel model)
 		{
 			VBOs = new int[model.meshCount];
@@ -28,7 +31,15 @@ namespace LombaxToes.Editor
 
 				try
 				{
-					uint albedoTuid = AssetManager.shaderGroup.GetShaderFromTuid(model.GetShaderTuid(i)).GetAlbedoTextureTuid();
+					Shader shader = AssetManager.shaderGroup.GetShaderFromTuid(model.GetShaderTuid(i));
+					uint albedoTuid = 0;
+					for(int j = 0; j < shader.textureTuidCount; j++)
+					{
+						albedoTuid = shader.GetTextureTuid(j);
+						if(albedoTuid == 0) continue;
+						if(AssetManager.textureGroup.FindTexture(albedoTuid) < 0) continue;
+						break;
+					}
 					materials[i] = new Material(MaterialManager.shaders["standard.vert;standardunlit.frag"], AssetManager.LoadTexture(albedoTuid));		//Temporary
 				}
 				catch(NullReferenceException)
@@ -42,10 +53,10 @@ namespace LombaxToes.Editor
 				GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
 
 				GL.BindVertexArray(VAOs[i]);
-				GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+				GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);					//Position data
 				GL.EnableVertexAttribArray(0);
 
-				GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+				GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));	//UV data
 				GL.EnableVertexAttribArray(1);
 
 				GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBOs[i]);

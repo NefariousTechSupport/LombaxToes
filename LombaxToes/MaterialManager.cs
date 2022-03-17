@@ -6,8 +6,11 @@ namespace LombaxToes.Editor
 
 		public static int LoadMaterial(string name, string vertexShaderPath, string fragmentShaderPath)
 		{
-			if(shaders.Any(x => x.Key == name)) return shaders.First(x => x.Key == name).Value;
-
+			if(shaders.Any(x => x.Key == name))
+			{
+				int shaderID = shaders.First(x => x.Key == name).Value;
+				return shaderID;
+			}
 			string vertexSource = File.ReadAllText(vertexShaderPath);
 			string fragmentSource = File.ReadAllText(fragmentShaderPath);
 
@@ -40,11 +43,11 @@ namespace LombaxToes.Editor
 
 			GL.LinkProgram(programId);
 
-			GL.GetProgram(fragmentProgramId, GetProgramParameterName.LinkStatus, out res);
+			GL.GetProgram(programId, GetProgramParameterName.LinkStatus, out res);
 			if(res != (int)All.True)
 			{
 				string infoLog = GL.GetProgramInfoLog(programId);
-				throw new Exception($"Error when linking program. Error: {infoLog}");
+				throw new Exception($"Error when linking program.\nError Code {GL.GetError()}.\nError Log: {infoLog}");
 			}
 
 			GL.DetachShader(programId, vertexProgramId);
