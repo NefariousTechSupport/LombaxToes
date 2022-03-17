@@ -17,6 +17,9 @@ namespace LombaxToes.Editor
 			GL.ClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Texture2D);
+			GL.Enable(EnableCap.Blend);
+			//GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+			GL.BlendFuncSeparate(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha, BlendingFactorSrc.One, BlendingFactorDest.Zero);
 			//GL.Enable(EnableCap.CullFace);	//Uncomment to improve performance, however there are some issues right now where ties are inside out cos their scale is -1, hence it's commented out
 
 

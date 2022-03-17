@@ -15,4 +15,8 @@
     <PackageReference Include="OpenTK" Version="4.6.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LibLombaxToes\LibLombaxToes.csproj" />
+  </ItemGroup>
+
 </Project>
