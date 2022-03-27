@@ -9,8 +9,7 @@ namespace LombaxToes.Editor
 		public Material[] materials;
 		int[] indexCounts;
 
-		Vector3 boundingCentre;
-		float boundingRadius;
+		public static uint drawcalls;		//This is for debugging
 
 		public Model(IrbModel model)
 		{
@@ -77,6 +76,7 @@ namespace LombaxToes.Editor
 			GL.GenBuffers(1, EBOs);
 
 			materials[0] = new Material(MaterialManager.shaders["standard.vert;standardwhite.frag"], null);		//Temporary
+			materials[0].drawType = PrimitiveType.Lines;
 			indexCounts[0] = indices.Length;
 
 			GL.BindBuffer(BufferTarget.ArrayBuffer, VBOs[0]);
@@ -97,6 +97,7 @@ namespace LombaxToes.Editor
 		{
 			for(int i = 0; i < VBOs.Length; i++)
 			{
+				drawcalls++;
 				materials[i].Use();
 				
 				materials[i].SetMatrix4x4("model", transform.GetLocalToWorldMatrix());

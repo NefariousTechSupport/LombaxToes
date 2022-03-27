@@ -17,6 +17,14 @@ namespace LombaxToes.Editor
 			}
 		}
 
+		public Vector3 Up
+		{
+			get
+			{
+				return Quaternion.Invert(rotation) * Vector3.UnitY;
+			}
+		}
+
 		public Vector3 Right
 		{
 			get

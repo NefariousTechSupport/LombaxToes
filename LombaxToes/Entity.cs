@@ -4,8 +4,8 @@ namespace LombaxToes.Editor
 	{
 		public Model model;
 		public Transform transform;
-		Vector3 boundingCentre;
-		float boundingRadius;
+		public Vector3 boundingCentre;
+		public float boundingRadius;
 
 		public Entity(Vector3 position, Vector3 rotation, Vector3 scale, Model model, Vector3 centre = new Vector3(), float radius = 0)
 		{

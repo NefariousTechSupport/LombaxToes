@@ -5,6 +5,7 @@ LibLombaxToes/obj
 .vscode
 *.dat
 *.irb
+*.obj
 .vs/LombaxToes/v17/.suo
 .vs/LombaxToes/v17/Browse.VC.db
 .vs/LombaxToes/v17/Browse.VC.db-shm

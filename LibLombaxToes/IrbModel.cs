@@ -6,7 +6,7 @@ namespace LibLombaxToes
 
 	public class IrbModel : IGHW
 	{
-		int type = -1;		//0 is Moby, 1 is Tie, -1 means no mesh
+		public int type = -1;		//0 is Moby, 1 is Tie, -1 means no mesh
 		MeshMetadata[] metadatas;
 		float meshScaleX;
 		float meshScaleY;
@@ -228,6 +228,19 @@ namespace LibLombaxToes
 			}
 
 			return indices;
+		}
+		public void GetMobyBoundingSphere(out float posx, out float posy, out float posz, out float radius)
+		{
+			if(type != 0) throw new InvalidOperationException("This only works on mobys, not ties");
+
+			IGHWSectionHeader scaleSection = GetSectionHeader(IGHWSectionIdentifier.MobyScale);
+
+			sh.BaseStream.Seek(scaleSection.offset, SeekOrigin.Begin);
+
+			posx = sh.ReadSingle();
+			posy = sh.ReadSingle();
+			posz = sh.ReadSingle();
+			radius = sh.ReadSingle();
 		}
 		public ulong GetShaderTuid(int index)
 		{

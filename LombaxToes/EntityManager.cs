@@ -12,7 +12,7 @@ namespace LombaxToes.Editor
 		static FileStream regionFS;
 		static FileStream zoneFS;
 
-		public static async void LoadLevel(string folderPath)
+		public static void LoadLevel(string folderPath)
 		{
 			priusFS = new FileStream(folderPath + "/default/gp_prius.dat", FileMode.Open, FileAccess.ReadWrite);
 			regionFS = new FileStream(folderPath + "/default/region.dat", FileMode.Open, FileAccess.ReadWrite);
@@ -24,7 +24,22 @@ namespace LombaxToes.Editor
 
 			for(int i = 0; i < prius.instanceCount; i++)
 			{
-				EntityManager.entities.Add(new Entity(new Vector3(prius.instances[i].xpos, prius.instances[i].ypos, prius.instances[i].zpos), new Vector3(prius.instances[i].xrot, prius.instances[i].yrot, prius.instances[i].zrot), Vector3.One * prius.instances[i].scale, AssetManager.LoadIrb(region.mobyTuids[prius.instances[i].mobyIdex])));
+				Vector3 position = new Vector3(prius.instances[i].xpos, prius.instances[i].ypos, prius.instances[i].zpos);
+				Vector3 boundingOffset;
+				float boundingRadius;
+				IrbModel moby = AssetManager.modelGroup.GetModelFromTuid(region.mobyTuids[prius.instances[i].mobyIdex]);
+				moby.GetMobyBoundingSphere(out boundingOffset.X, out boundingOffset.Y, out boundingOffset.Z, out boundingRadius);
+				EntityManager.entities.Add(new Entity(
+					position,
+					new Vector3(prius.instances[i].xrot, prius.instances[i].yrot, prius.instances[i].zrot),
+					Vector3.One * prius.instances[i].scale,
+					AssetManager.LoadIrb(region.mobyTuids[prius.instances[i].mobyIdex]),
+					position + boundingOffset,
+					boundingRadius
+					));
+				//Uncomment the following to display bounding spheres
+				//AssetManager.modelGroup.GetModelFromTuid(region.mobyTuids[prius.instances[i].mobyIdex]).GetMobyBoundingSphere(out float posx, out float posy, out float posz, out float radius);
+				//EntityManager.entities.Add(new Entity(new Vector3(prius.instances[i].xpos + posx * prius.instances[i].scale, prius.instances[i].ypos + posy * prius.instances[i].scale, prius.instances[i].zpos + posz * prius.instances[i].scale), Vector3.Zero, Vector3.One * radius, AssetManager.LoadIrb(0x42069420)));
 			} 
 
 			for(int j = 0; j < zones.Length; j++)
@@ -50,10 +65,23 @@ namespace LombaxToes.Editor
 
 		public static void Render()
 		{
+			Model.drawcalls = 0;
+			
+			List<(float, Entity)> sorted = new List<(float, Entity)>();
 			for(int i = 0; i < entities.Count; i++)
 			{
-				entities[i].Render();
+				float distance = (Camera.transform.position - entities[i].transform.position).LengthSquared;
+				sorted.Add( (distance, entities[i]) );
 			}
+
+			sorted.OrderByDescending(x => x.Item1);
+
+			for(int i = 0; i < sorted.Count; i++)
+			{
+				sorted[i].Item2.Render();
+			}
+
+			Console.WriteLine($"{Model.drawcalls} Draw Calls");
 		}
 	}
 }
