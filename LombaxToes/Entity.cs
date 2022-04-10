@@ -11,7 +11,8 @@ namespace LombaxToes.Editor
 		{
 			transform = new Transform(position, rotation, scale);
 
-			this.model = model;
+			model.transforms.Add(transform);
+			
 			boundingCentre = centre;
 			boundingRadius = radius;
 		}
@@ -20,16 +21,11 @@ namespace LombaxToes.Editor
 			transform = new Transform(transformation);
 
 			this.model = model;
+
+			model.transforms.Add(transform);
+
 			boundingCentre = centre;
 			boundingRadius = radius;
-		}
-
-		public void Render()
-		{
-			if(model != null)
-			{
-				model.Render(transform);
-			}
 		}
 	}
 }

@@ -9,6 +9,8 @@ namespace LombaxToes.Editor
 		public Material[] materials;
 		int[] indexCounts;
 
+		public List<Transform> transforms = new List<Transform>();
+
 		public static uint drawcalls;		//This is for debugging
 
 		public Model(IrbModel model)
@@ -93,20 +95,38 @@ namespace LombaxToes.Editor
 			GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
 		}
 
-		public void Render(Transform transform)
+		public void Render()
 		{
+			//Comment the following and uncomment what's after that to enable instancing
+
 			for(int i = 0; i < VBOs.Length; i++)
+			{
+				materials[i].Use();
+
+				for(int j = 0; j < transforms.Count; j++)
+				{
+					drawcalls++;
+					materials[i].SetMatrix4x4($"transform", transforms[j].GetLocalToWorldMatrix() * Camera.WorldToView * Camera.ViewToClip);
+					GL.BindVertexArray(VAOs[i]);
+					GL.DrawElements(materials[i].drawType, indexCounts[i], DrawElementsType.UnsignedInt, IntPtr.Zero);
+				}
+			}
+
+			/*for(int i = 0; i < VBOs.Length; i++)
 			{
 				drawcalls++;
 				materials[i].Use();
-				
-				materials[i].SetMatrix4x4("model", transform.GetLocalToWorldMatrix());
-				materials[i].SetMatrix4x4("view", Camera.WorldToView);
-				materials[i].SetMatrix4x4("projection", Camera.ViewToClip);
+
+				System.Diagnostics.Debug.Assert(transforms.Count <= 256);
+
+				for(int j = 0; j < transforms.Count; j++)
+				{
+					materials[i].SetMatrix4x4($"transforms[{j}]", transforms[j].GetLocalToWorldMatrix() * Camera.WorldToView * Camera.ViewToClip);
+				}
 
 				GL.BindVertexArray(VAOs[i]);
-				GL.DrawElements(materials[i].drawType, indexCounts[i], DrawElementsType.UnsignedInt, 0);
-			}
+				GL.DrawElementsInstanced(materials[i].drawType, indexCounts[i], DrawElementsType.UnsignedInt, IntPtr.Zero, transforms.Count);
+			}*/
 		}
 		public void Dispose()
 		{

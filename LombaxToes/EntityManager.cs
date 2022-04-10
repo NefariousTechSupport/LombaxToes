@@ -66,19 +66,10 @@ namespace LombaxToes.Editor
 		public static void Render()
 		{
 			Model.drawcalls = 0;
-			
-			List<(float, Entity)> sorted = new List<(float, Entity)>();
-			for(int i = 0; i < entities.Count; i++)
-			{
-				float distance = (Camera.transform.position - entities[i].transform.position).LengthSquared;
-				sorted.Add( (distance, entities[i]) );
-			}
 
-			sorted.OrderByDescending(x => x.Item1);
-
-			for(int i = 0; i < sorted.Count; i++)
+			foreach(KeyValuePair<uint, Model> model in AssetManager.models)
 			{
-				sorted[i].Item2.Render();
+				model.Value.Render();
 			}
 
 			Console.WriteLine($"{Model.drawcalls} Draw Calls");
