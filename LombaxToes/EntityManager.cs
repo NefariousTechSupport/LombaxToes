@@ -65,14 +65,10 @@ namespace LombaxToes.Editor
 
 		public static void Render()
 		{
-			Model.drawcalls = 0;
-
 			foreach(KeyValuePair<uint, Model> model in AssetManager.models)
 			{
 				model.Value.Render();
 			}
-
-			Console.WriteLine($"{Model.drawcalls} Draw Calls");
 		}
 	}
 }

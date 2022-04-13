@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace LombaxToes.Editor
 {
 	public class Model
@@ -5,13 +7,13 @@ namespace LombaxToes.Editor
 		int[] VBOs;
 		int[] VAOs;
 		int[] EBOs;
+		int instanceMatrices;
 
 		public Material[] materials;
 		int[] indexCounts;
 
 		public List<Transform> transforms = new List<Transform>();
-
-		public static uint drawcalls;		//This is for debugging
+		public Matrix4[] transformMatrices = new Matrix4[0];
 
 		public Model(IrbModel model)
 		{
@@ -97,39 +99,52 @@ namespace LombaxToes.Editor
 
 		public void Render()
 		{
-			//Comment the following and uncomment what's after that to enable instancing
+			if(transformMatrices.Length != transforms.Count)
+			{
+				GL.DeleteBuffer(instanceMatrices);
+				transformMatrices = new Matrix4[transforms.Count];
+				instanceMatrices = GL.GenBuffer();
+			}
+
+			for(int i = 0; i < transforms.Count; i++)
+			{
+				transformMatrices[i] = Matrix4.Transpose(transforms[i].GetLocalToWorldMatrix() * Camera.WorldToView * Camera.ViewToClip);
+			}
+
+			GL.BindBuffer(BufferTarget.ArrayBuffer, instanceMatrices);
+			GL.BufferData(BufferTarget.ArrayBuffer, transformMatrices.Length * sizeof(float) * 16, transformMatrices, BufferUsageHint.StaticDraw);
 
 			for(int i = 0; i < VBOs.Length; i++)
 			{
 				materials[i].Use();
 
-				for(int j = 0; j < transforms.Count; j++)
-				{
-					drawcalls++;
-					materials[i].SetMatrix4x4($"transform", transforms[j].GetLocalToWorldMatrix() * Camera.WorldToView * Camera.ViewToClip);
-					GL.BindVertexArray(VAOs[i]);
-					GL.DrawElements(materials[i].drawType, indexCounts[i], DrawElementsType.UnsignedInt, IntPtr.Zero);
-				}
-			}
-
-			/*for(int i = 0; i < VBOs.Length; i++)
-			{
-				drawcalls++;
-				materials[i].Use();
-
-				System.Diagnostics.Debug.Assert(transforms.Count <= 256);
-
-				for(int j = 0; j < transforms.Count; j++)
-				{
-					materials[i].SetMatrix4x4($"transforms[{j}]", transforms[j].GetLocalToWorldMatrix() * Camera.WorldToView * Camera.ViewToClip);
-				}
-
 				GL.BindVertexArray(VAOs[i]);
+
+				GL.VertexAttribPointer(5, 4, VertexAttribPointerType.Float, false, 16 * sizeof(float), 0);
+				GL.VertexAttribDivisor(5, 1);
+				GL.EnableVertexAttribArray(5);
+
+				GL.VertexAttribPointer(6, 4, VertexAttribPointerType.Float, false, 16 * sizeof(float), 4 * sizeof(float));
+				GL.VertexAttribDivisor(6, 1);
+				GL.EnableVertexAttribArray(6);
+
+				GL.VertexAttribPointer(7, 4, VertexAttribPointerType.Float, false, 16 * sizeof(float), 8 * sizeof(float));
+				GL.VertexAttribDivisor(7, 1);
+				GL.EnableVertexAttribArray(7);
+
+				GL.VertexAttribPointer(8, 4, VertexAttribPointerType.Float, false, 16 * sizeof(float), 12 * sizeof(float));
+				GL.VertexAttribDivisor(8, 1);
+				GL.EnableVertexAttribArray(8);
+
 				GL.DrawElementsInstanced(materials[i].drawType, indexCounts[i], DrawElementsType.UnsignedInt, IntPtr.Zero, transforms.Count);
-			}*/
+			}
 		}
 		public void Dispose()
 		{
+			GL.DeleteBuffers(VBOs.Length, VBOs);
+			GL.DeleteBuffers(VAOs.Length, VAOs);
+			GL.DeleteBuffers(EBOs.Length, EBOs);
+			GC.Collect();
 			materials[0].Dispose();		//Temp
 		}
 	}

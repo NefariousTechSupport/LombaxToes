@@ -2,12 +2,53 @@ namespace LombaxToes.Editor
 {
 	public class Transform
 	{
-		public Vector3 position = Vector3.Zero;
-		public Quaternion rotation = Quaternion.Identity;
-		public Vector3 scale = Vector3.One;
+		public Vector3 Position
+		{
+			get
+			{
+				return position;
+			}
+			set
+			{
+				position = value;
+				updated = true;
+			}
+		}
+		public Quaternion Rotation
+		{
+			get
+			{
+				return rotation;
+			}
+			set
+			{
+				rotation = value;
+				updated = true;
+			}
+		}
+
+		public Vector3 Scale
+		{
+			get
+			{
+				return scale;
+			}
+			set
+			{
+				scale = value;
+				updated = true;
+			}
+		}
+
+
+		Vector3 position = Vector3.Zero;
+		Quaternion rotation = Quaternion.Identity;
+		Vector3 scale = Vector3.One;
 
 		private Matrix4 modelMatrix;
 		public bool useMatrix = false;
+
+		public bool updated = false;
 
 		public Vector3 Forward
 		{

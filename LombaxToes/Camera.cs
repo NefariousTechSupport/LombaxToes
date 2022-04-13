@@ -8,7 +8,7 @@ namespace LombaxToes.Editor
 		{
 			get
 			{
-				return Matrix4.CreateTranslation(transform.position) * Matrix4.CreateFromQuaternion(transform.rotation);
+				return Matrix4.CreateTranslation(transform.Position) * Matrix4.CreateFromQuaternion(transform.Rotation);
 			}
 		}
 		public static Matrix4 ViewToClip;
