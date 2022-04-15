@@ -9,13 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="LibLombaxToes">
-      <HintPath>..\LibLombaxToes\bin\Debug\net6.0\LibLombaxToes.dll</HintPath>
-    </Reference>
     <PackageReference Include="OpenTK" Version="4.6.7" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LibLombaxToes\LibLombaxToes.csproj" />
   </ItemGroup>
 
