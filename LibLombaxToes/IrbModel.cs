@@ -127,9 +127,9 @@ namespace LibLombaxToes
 					metadatas[i].indexCount = sh.ReadUInt16();
 					sh.ReadUInt32();
 					sh.ReadUInt32();
-
-					metadatas[i].boneMapOffset = sh.ReadUInt32();
 					sh.ReadUInt32();
+
+					//metadatas[i].shaderIndex = sh.ReadUInt16();
 				}
 			}
 			else
