@@ -129,7 +129,7 @@ namespace LibLombaxToes
 					sh.ReadUInt32();
 					sh.ReadUInt32();
 
-					//metadatas[i].shaderIndex = sh.ReadUInt16();
+					metadatas[i].shaderIndex = sh.ReadUInt16();
 				}
 			}
 			else
