@@ -54,9 +54,6 @@ namespace LibLombaxToes
 				return null;
 			}
 
-			//if(ripMipmaps) throw new NotImplementedException("Mipmaps aren't supported");
-			if(highmipsStream == null) throw new NotImplementedException("Highmips must be assigned");
-
 			uint rippedBytes = 0;
 			uint finalSize = CalculateTextureSize(tuid, ripMipmaps ? -1 : 0);
 
@@ -69,15 +66,18 @@ namespace LibLombaxToes
 				return null;
 			}
 
-			highmipsStream.Seek(textures[index].highmipsPointer.offset, SeekOrigin.Begin);
 			byte[] data = new byte[finalSize];
-			highmipsStream.Read(data, 0x00, (int)textures[index].highmipsPointer.length);
+			if(highmipsStream != null)
+			{
+				highmipsStream.Seek(textures[index].highmipsPointer.offset, SeekOrigin.Begin);
+				highmipsStream.Read(data, 0x00, (int)textures[index].highmipsPointer.length);
+			}
 
 			rippedBytes += textures[index].highmipsPointer.length;
 
 			format = textures[index].format;
-			width = textures[index].width;
-			height = textures[index].height;
+			width = textures[index].width / (highmipsStream == null ? 2 : 1);
+			height = textures[index].height / (highmipsStream == null ? 2 : 1);
 			mipmapCount = 1;
 
 			if(ripMipmaps)
@@ -100,14 +100,13 @@ namespace LibLombaxToes
 		{
 			int index = FindTexture(tuid);
 			if(index < 0) return 0;
-			
 
 			switch(textures[index].format)
 			{
 				case TextureFormat.DXT1:
 				case TextureFormat.DXT5:
 					uint size = 0;
-					for(int i = (mipmap < 0 ? 0 : mipmap); i < (mipmap < 0 ? textures[index].mipmapCount : mipmap + 1); i++)
+					for(int i = (mipmap < 0 ? 0 : mipmap) - (highmipsStream == null ? 1 : 0); i < (mipmap < 0 ? textures[index].mipmapCount : mipmap + 1); i++)
 					{
 						size += (uint)(
 							Math.Max(1, ((textures[index].width  / (1 << i)) + 3) / 4) * 

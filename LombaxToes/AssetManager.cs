@@ -22,7 +22,14 @@ namespace LombaxToes.Editor
 		{
 			assetlookupFS = new FileStream(folderPath + "/assetlookup.dat", FileMode.Open, FileAccess.ReadWrite);
 			texturesFS = new FileStream(folderPath + "/textures.dat", FileMode.Open, FileAccess.ReadWrite);
-			highmipsFS = new FileStream(folderPath + "/highmips.dat", FileMode.Open, FileAccess.ReadWrite);
+			if(File.Exists(folderPath + "/highmips.dat"))
+			{
+				highmipsFS = new FileStream(folderPath + "/highmips.dat", FileMode.Open, FileAccess.ReadWrite);
+			}
+			else
+			{
+				highmipsFS = null;
+			}
 			mobysFS = new FileStream(folderPath + "/mobys.dat", FileMode.Open, FileAccess.ReadWrite);
 			tiesFS = new FileStream(folderPath + "/ties.dat", FileMode.Open, FileAccess.ReadWrite);
 			shadersFS = new FileStream(folderPath + "/shaders.dat", FileMode.Open, FileAccess.ReadWrite);

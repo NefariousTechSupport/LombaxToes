@@ -12,6 +12,7 @@ void main()
 	if(useTexture)
 	{
 		colour = texture(albedo, UVs);
+		if(colour.a < 0.1f) discard;
 	}
 	else
 	{

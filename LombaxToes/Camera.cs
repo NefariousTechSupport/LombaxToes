@@ -15,7 +15,7 @@ namespace LombaxToes.Editor
 
 		public static void CreatePerspective(float fov)
 		{
-			ViewToClip = Matrix4.CreatePerspectiveFieldOfView(fov, 1280f/720f, 0.001f, 10000f);
+			ViewToClip = Matrix4.CreatePerspectiveFieldOfView(fov, 1280f/720f, 0.1f, 10000f);
 		}
 	}
 }

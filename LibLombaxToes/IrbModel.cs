@@ -129,7 +129,10 @@ namespace LibLombaxToes
 					sh.ReadUInt32();
 					sh.ReadUInt32();
 
-					metadatas[i].shaderIndex = sh.ReadUInt16();
+					sh.ReadUInt32();
+					sh.ReadUInt32();
+					sh.ReadUInt16();
+					metadatas[i].shaderIndex = sh.ReadByte();
 				}
 			}
 			else
@@ -231,6 +234,15 @@ namespace LibLombaxToes
 		}
 		public void GetMobyBoundingSphere(out float posx, out float posy, out float posz, out float radius)
 		{
+			if(type == -1)
+			{
+				posx = 0;
+				posy = 0;
+				posz = 0;
+				radius = 0;
+				return;
+			}
+
 			if(type != 0) throw new InvalidOperationException("This only works on mobys, not ties");
 
 			IGHWSectionHeader scaleSection = GetSectionHeader(IGHWSectionIdentifier.MobyScale);
